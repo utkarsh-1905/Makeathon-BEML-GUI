@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+}
+
+body {
+  background-color: #0f0f0f;
+  color: white;
+}
+
+.title {
+  text-align: center;
+  width: 100%;
+  height: fit-content;
+  font-size: 2rem;
+}
+
+.sync {
+  background-color: #89a2fa;
+  border: none;
+  width: 100px;
+  height: 35px;
+  color: white;
+  border-radius: 50px;
+  align-items: "center";
+  cursor: pointer;
+}
+
+.shadow {
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+    0 3px 5px -1px rgba(0, 0, 0, 0.3);
+}
+
+.upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.dashboard {
+  width: 80%;
+  height: 200px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
