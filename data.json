@@ -1,0 +1,17 @@
+{
+    "data":{
+    "engine_oil_temp":"69",
+    "engine_oil_pressure":"6.0",
+    "location":{
+        "latitute":"42.0",
+        "longitude":"69.0"
+    },
+    "running_status":"1",
+    "battery_charge_level":"69",
+    "hydraulic_oil_level":"69",
+    "tyre_pressure_level":"32",
+    "coolant_temp":"69",
+    "coolant_level":"69"  
+    },
+    "uid":"616116771" 
+}
