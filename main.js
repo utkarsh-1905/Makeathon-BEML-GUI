@@ -1,11 +1,16 @@
+// Dependencies
+
 const { app, BrowserWindow } = require("electron");
+const ejse = require("ejs-electron");
 const crypto = require("crypto");
 const nodeWatch = require("node-watch");
 const fs = require("fs");
 const express = require("express");
 const express_app = express();
 const { networkInterfaces } = require("os");
-const res = require("express/lib/response");
+const morgan = require("morgan");
+const cors = require("cors");
+const helmet = require("helmet");
 const http = require("http").Server(express_app);
 
 // remove in production
@@ -13,15 +18,24 @@ const http = require("http").Server(express_app);
 //   require("electron-reloader")(module);
 // } catch (_) {}
 
+express_app.use(morgan("dev"));
+// express_app(cors());
+express_app.use(helmet());
+
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
+    center: true,
+    resizable: true,
+    frame: true,
+    transparent: false,
     webPreferences: {
       nodeIntegration: true,
     },
   });
-  win.loadFile("./views/index.html");
+  win.loadFile("./views/index.ejs");
+  // win.webContents.openDevTools();
 };
 
 const public = fs.readFileSync("./public.pem", "utf8");
@@ -41,10 +55,18 @@ for (const name of Object.keys(nets)) {
   }
 }
 const myip = results["Wi-Fi"][0];
+const data = JSON.parse(fs.readFileSync("./data.json", "utf8"));
+const engineOilTemp = data.data.engine_oil_temp;
+const engineOilPressure = data.data.engine_oil_pressure;
+const runningStatus = data.data.running_status;
+ejse.data("engineOilTemp", engineOilTemp);
+ejse.data("engineOilPressure", engineOilPressure);
+ejse.data("runningStatus", runningStatus);
+ejse.data("myip", myip);
+ejse.data("data", `${data["data"]}`);
 
 const encryptAndStore = () => {
   const data = fs.readFileSync("./data.json", "utf8");
-
   const encryptData = crypto.publicEncrypt(
     {
       key: public,
@@ -53,16 +75,13 @@ const encryptAndStore = () => {
     },
     Buffer.from(JSON.stringify(data))
   );
-
   const cypherStore = JSON.parse(
     fs.readFileSync("./machine_data/data.json", "utf8")
   );
-
   cypherStore.cypher.push({
     cypherData: encryptData,
     time: new Date().toISOString(),
   });
-
   fs.writeFileSync("machine_data/data.json", JSON.stringify(cypherStore));
   console.log("changed");
 };
@@ -80,8 +99,9 @@ const emptyCipherArray = () => {
 // emptyCipherArray();
 
 http.listen(3000, myip, () => console.log("listening"));
-express_app.get("/", (req, res) => {
-  res.send("helloo");
+express_app.get("/data", (req, res) => {
+  const data = JSON.parse(fs.readFileSync("./machine_data/data.json", "utf8"));
+  res.json(data);
 });
 
 // Desktop GUI

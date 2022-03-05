@@ -16,7 +16,10 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "ejs-electron": "^2.1.1",
     "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "morgan": "^1.10.0",
     "node-watch": "^0.7.3"
   }
 }
