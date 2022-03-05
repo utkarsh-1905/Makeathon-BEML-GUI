@@ -9,7 +9,6 @@ const express = require("express");
 const express_app = express();
 const { networkInterfaces } = require("os");
 const morgan = require("morgan");
-const cors = require("cors");
 const helmet = require("helmet");
 const http = require("http").Server(express_app);
 
@@ -64,6 +63,7 @@ ejse.data("engineOilPressure", engineOilPressure);
 ejse.data("runningStatus", runningStatus);
 ejse.data("myip", myip);
 ejse.data("data", `${data["data"]}`);
+ejse.data("uid", "696969669");
 
 const encryptAndStore = () => {
   const data = fs.readFileSync("./data.json", "utf8");
@@ -100,8 +100,14 @@ const emptyCipherArray = () => {
 
 http.listen(3000, myip, () => console.log("listening"));
 express_app.get("/data", (req, res) => {
-  const data = JSON.parse(fs.readFileSync("./machine_data/data.json", "utf8"));
-  res.json(data);
+  if (req.header("X-Passphrase") === "B@%Z$&%%2LQK@it6") {
+    const data = JSON.parse(
+      fs.readFileSync("./machine_data/data.json", "utf8")
+    );
+    res.json(data);
+  } else {
+    res.status(401).json({ status: "Unauthorized" });
+  }
 });
 
 // Desktop GUI

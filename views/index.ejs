@@ -18,6 +18,7 @@
     <div class="dashboard">
       <h2 class="dashboard-content">Live Data</h2>
       <ul>
+        <li>Vehicle Id = <%=uid%></li>
         <li>Engine Oil Temperature = <%=engineOilTemp%></li>
         <li>Engine Oil Pressure = <%=engineOilPressure%></li>
         <li>Running Status = <%=runningStatus%></li>
@@ -28,7 +29,7 @@
         To Connect, enter this url in your mobile terminal
       </div>
       <button class="sync shadow border border-1 disabled border-info">
-        http://<%=myip%>/data
+        http://<%=myip%>:3000/data
       </button>
     </div>
     <script
